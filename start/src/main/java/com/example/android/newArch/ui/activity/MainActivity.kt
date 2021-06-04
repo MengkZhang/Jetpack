@@ -101,21 +101,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadMoreEvent() {
         momentAdapter?.setOnLoadMoreListener({
-            val loadMore = viewModel.loadMore()
-            loadMore?.let {
-                loadMore.observe(this, {
-                    momentAdapter?.loadMoreComplete()
-                    val momentList = GsonUtil.getMomentList(it)
-                    if (momentList.isEmpty()) {
-                        momentAdapter?.loadMoreEnd()
-                    } else {
-                        list.addAll(momentList)
-                        momentAdapter?.notifyItemChanged(viewModel.getOffset())
-                    }
-                })
-            } ?: let {
-                momentAdapter?.loadMoreEnd()
-            }
+            viewModel.loadMore()?.observe(this, {
+                momentAdapter?.loadMoreComplete()
+                val momentList = GsonUtil.getMomentList(it)
+                if (momentList.isEmpty()) {
+                    momentAdapter?.loadMoreEnd()
+                } else {
+                    list.addAll(momentList)
+                    momentAdapter?.notifyItemChanged(viewModel.getOffset())
+                }
+            })
 
         }, recyclerView)
     }

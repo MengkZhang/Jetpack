@@ -1,0 +1,2 @@
+include ':start'
+rootProject.name='NewArch'
